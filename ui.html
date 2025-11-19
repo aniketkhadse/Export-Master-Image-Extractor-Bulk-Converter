@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Original Image Extractor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #1E1E1E;
+            --bg-secondary: #2A2A2A;
+            --bg-tertiary: #333333;
+            --text-primary: #FFFFFF;
+            --text-secondary: #AAAAAA;
+            --text-tertiary: #888888;
+            --primary: #0D99FF;
+            --primary-light: #59BFFF;
+            --tip-gold: #FFB800; /* New color for tip button */
+            --green: #10B981;
+            --red: #F47174;
+            --border: #444444;
+        }
+
+        *,
+        ::before,
+        ::after {
+            box-sizing: border-box;
+            border-width: 0;
+            border-style: solid;
+            border-color: var(--border);
+        }
+
+        html {
+            height: 100%;
+            overflow: hidden;
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+            tab-size: 4;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            height: 100%;
+            margin: 0;
+            line-height: inherit;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overscroll-behavior: none;
+        }
+
+        h1, h2, h3, button, ol, p, svg, input, div, label, section, main, header, footer {
+            margin: 0;
+            padding: 0;
+        }
+
+        button {
+            background-color: transparent;
+            background-image: none;
+            cursor: pointer;
+            color: inherit;
+        }
+
+        button:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        input {
+            font-family: inherit;
+            font-size: 100%;
+            line-height: inherit;
+            color: inherit;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .app-container {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            padding: 0.75rem 1rem;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 0.75rem;
+            gap: 0.75rem;
+            min-height: 0;
+        }
+
+        .page::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .page::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .page::-webkit-scrollbar-thumb {
+            background: var(--text-tertiary);
+            border-radius: 4px;
+        }
+
+        .page::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        #page-scan {
+            display: flex;
+        }
+
+        #page-results {
+            display: none;
+        }
+
+        footer {
+            padding: 0.75rem 1rem;
+            flex-shrink: 0;
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+        }
+
+        section {
+            margin-bottom: 0;
+        }
+
+        .page>section {
+            margin-bottom: 0.75rem;
+        }
+
+        .page>section:last-child {
+            margin-bottom: 0;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+            padding: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            transition: all 0.1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--bg-primary), 0 0 0 4px var(--primary);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #4A4A4A;
+        }
+
+        .btn-tip {
+            background-color: var(--tip-gold);
+            color: #000000;
+        }
+
+        .btn-tip:hover {
+            background-color: #FFD466;
+        }
+
+        .btn-green {
+            background-color: var(--green);
+            color: white;
+        }
+
+        .btn-green:hover {
+            background-color: #15D19A;
+        }
+
+        .btn-danger {
+            background-color: var(--red);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #f78a8d;
+        }
+
+        .btn-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            font-size: 0.875rem;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--bg-primary), 0 0 0 4px var(--primary);
+        }
+
+        .header-title {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .help-btn {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 9999px;
+            color: var(--text-secondary);
+        }
+
+        .help-btn:hover {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            padding-left: 0.25rem;
+        }
+
+        .scan-mode-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .scan-mode-radio {
+            display: none;
+        }
+
+        .scan-mode-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            cursor: pointer;
+        }
+
+        .scan-mode-radio:checked+.scan-mode-label {
+            background-color: var(--bg-primary);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .progress-bar {
+            display: none;
+            padding-top: 1rem;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 0.5rem;
+            border-radius: 9999px;
+            background-color: var(--bg-tertiary);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .results-card {
+            text-align: center;
+            padding: 0.75rem;
+        }
+
+        .results-count {
+            font-size: 1.5rem;
+            font-weight: 800;
+            line-height: 1;
+            color: var(--text-primary);
+        }
+
+        .results-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 0.75rem;
+            font-weight: 600;
+            border-radius: 0.375rem;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn.active {
+            background-color: var(--bg-primary);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .format-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .format-checkbox {
+            display: none;
+        }
+
+        .format-label {
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            cursor: pointer;
+        }
+
+        .format-checkbox:checked+.format-label {
+            background-color: var(--bg-primary);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .token-btn {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-tertiary);
+            padding: 0.125rem 0.5rem;
+            border-radius: 9999px;
+            background-color: var(--bg-tertiary);
+            width: auto;
+        }
+
+        .token-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: var(--bg-secondary);
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+            padding: 2rem;
+            width: 100%;
+            max-width: 24rem;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .welcome-steps {
+            text-align: left;
+            margin-bottom: 1.5rem;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .welcome-steps li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-steps li:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-num {
+            flex-shrink: 0;
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 9999px;
+            background: var(--bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .step-text {
+            font-weight: 500;
+            flex: 1;
+            padding-top: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .modal-link {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            text-decoration: underline;
+            margin-top: 1rem;
+            display: block;
+            cursor: pointer;
+        }
+
+        .status-message {
+            display: none;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-align: center;
+            border: 1px solid transparent;
+            margin-top: 0.75rem;
+        }
+
+        .status-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .status-error {
+            background-color: rgba(244, 113, 116, 0.1);
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .status-warn {
+            background-color: rgba(255, 184, 0, 0.1);
+            border-color: var(--tip-gold);
+            color: var(--tip-gold);
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <button id="backBtn" class="btn btn-icon btn-secondary" style="display: none;">
+                    <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
+                        </path>
+                    </svg>
+                </button>
+                <h1 class="header-title">Image Extractor</h1>
+            </div>
+            <button id="helpButton" title="Show Help" class="help-btn">
+                <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                    </path>
+                </svg>
+            </button>
+        </header>
+
+        <main id="page-scan" class="page">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                <section>
+                    <h2 class="section-title">1. Scan</h2>
+                    <div class="card" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div class="scan-mode-group">
+                            <input type="radio" id="modeEntire" name="scanMode" value="entire" class="scan-mode-radio"
+                                checked>
+                            <label for="modeEntire" class="scan-mode-label">
+                                <svg style="width: 1.5rem; height: 1.5rem; margin-bottom: 0.25rem;" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-.36 1.136-.864 2.186-1.5 3.14M2.458 12C3.732 16.057 7.523 19 12 19c4.478 0 8.268-2.943 9.542-7 .36-1.136.864-2.186 1.5-3.14">
+                                    </path>
+                                </svg>
+                                Entire Page
+                            </label>
+
+                            <input type="radio" id="modeSelected" name="scanMode" value="selected"
+                                class="scan-mode-radio">
+                            <label for="modeSelected" class="scan-mode-label">
+                                <svg style="width: 1.5rem; height: 1.5rem; margin-bottom: 0.25rem;" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 0h-4m4 0l-5-5">
+                                    </path>
+                                </svg>
+                                Selection
+                                <span id="selectionCount"
+                                    style="font-size: 0.75rem; color: var(--text-tertiary); display: none;">(0
+                                    selected)</span>
+                            </label>
+                        </div>
+                        <button id="scanBtn" class="btn btn-primary">
+                            <svg id="scanBtnIcon" style="width: 1.25rem; height: 1.25rem;" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <svg id="scanBtnSpinner"
+                                style="width: 1.25rem; height: 1.25rem; display: none; animation: spin 1s linear infinite;"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            <span id="scanBtnText">Scan for Images</span>
+                        </button>
+                        <button id="scanStopBtn" class="btn btn-danger" style="display: none;">
+                            <svg style="width: 1.25rem; height: 1.25rem;" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1zm2 3a1 1 0 00-1 1v4a1 1 0 102 0v-4a1 1 0 00-1-1z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Stop Scan</span>
+                        </button>
+                    </div>
+                </section>
+
+                <div>
+                    <div id="scanProgress" class="progress-bar">
+                        <div class="progress-track">
+                            <div id="scanFill" class="progress-fill"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="scanPhase">Scanning...</span>
+                            <span id="scanStats">0/0</span>
+                        </div>
+                    </div>
+                    <div id="scanStatusMessage" class="status-message" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </main>
+
+        <main id="page-results" class="page">
+            <section class="results-card card">
+                <div id="imageCount" class="results-count">0</div>
+                <div class="results-label">Unique Images Found</div>
+                <div id="totalSize"
+                    style="font-size: 0.75rem; color: var(--text-tertiary); margin-top: 0.25rem; display: none;"></div>
+            </section>
+
+            <section class="tabs">
+                <button id="tabBtnOriginals" class="tab-btn active">
+                    <span>Download Originals</span>
+                </button>
+                <button id="tabBtnConvert" class="tab-btn">
+                    <span>Convert & Rename</span>
+                </button>
+            </section>
+
+            <section id="tabContentOriginals" class="tab-content active">
+                <div class="card" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <h3 style="font-size: 1rem; font-weight: 600;">Originals Export</h3>
+                    <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+                        Download all images in their original format.
+                    </p>
+                    <button id="downloadOriginalBtn" class="btn btn-green">
+                        <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        <span id="downloadOriginalBtnText">Download Zip</span>
+                    </button>
+                    <div id="dlProgressOriginals" class="progress-bar" style="padding-top: 0.75rem;">
+                        <div class="progress-track">
+                            <div id="dlFillOriginals" class="progress-fill"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="dlPhaseOriginals">Downloading...</span>
+                            <span id="dlStatsOriginals">0/0</span>
+                        </div>
+                    </div>
+                    <button id="dlStopBtnOriginals" class="btn btn-danger" style="display: none; margin-top: 0.75rem;">
+                        <svg style="width: 1.25rem; height: 1.25rem;" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1zm2 3a1 1 0 00-1 1v4a1 1 0 102 0v-4a1 1 0 00-1-1z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Stop Export</span>
+                    </button>
+                </div>
+            </section>
+
+            <section id="tabContentConvert" class="tab-content">
+                <div class="card" style="position: relative; display: flex; flex-direction: column; gap: 0.75rem;">
+                    <label class="section-title" style="margin-bottom: 0.25rem;">Formats (Select One)</label>
+                    <div class="format-group">
+                        <input type="checkbox" id="formatJPG" value="JPG" class="format-checkbox btn" checked>
+                        <label for="formatJPG" class="format-label">JPG</label>
+                        <input type="checkbox" id="formatPNG" value="PNG" class="format-checkbox btn">
+                        <label for="formatPNG" class="format-label">PNG</label>
+                        <input type="checkbox" id="formatWEBP" value="WEBP" class="format-checkbox btn">
+                        <label for="formatWEBP" class="format-label">WEBP</label>
+                    </div>
+
+                    <label class="section-title" style="margin-bottom: 0.25rem;">Rename Pattern</label>
+                    <input type="text" id="renamePattern" value="{frame}/{name}-{count}">
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                        <button class="btn token-btn" data-token="{name}">{name}</button>
+                        <button class="btn token-btn" data-token="{frame}">{frame}</button>
+                        <button class="btn token-btn" data-token="{width}">{width}</button>
+                        <button class="btn token-btn" data-token="{height}">{height}</button>
+                        <button class="btn token-btn" data-token="{count}">{count}</button>
+                    </div>
+
+                    <button id="downloadConvertBtn" class="btn btn-primary" style="margin-top: 0.75rem;">
+                        <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        <span id="downloadConvertBtnText">Convert & Download</span>
+                    </button>
+                    <div id="dlProgressConvert" class="progress-bar" style="padding-top: 0.75rem;">
+                        <div class="progress-track">
+                            <div id="dlFillConvert" class="progress-fill"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="dlPhaseConvert">Downloading...</span>
+                            <span id="dlStatsConvert">0/0</span>
+                        </div>
+                    </div>
+                    <button id="dlStopBtnConvert" class="btn btn-danger" style="display: none; margin-top: 0.75rem;">
+                        <svg style="width: 1.25rem; height: 1.25rem;" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1zm2 3a1 1 0 00-1 1v4a1 1 0 102 0v-4a1 1 0 00-1-1z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Stop Export</span>
+                    </button>
+                </div>
+            </section>
+
+            <div id="statusMessage" class="status-message" style="margin-top: 0.75rem;"></div>
+        </main>
+
+        <footer id="entitlementFooter">
+            <p id="footerText" class="footer-text">
+                Plugin is Free. If it's helpful, consider leaving a review!
+            </p>
+        </footer>
+    </div>
+
+    <div id="downloadSuccessModal" class="modal-overlay">
+        <div class="modal-card">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block; margin: 0 auto;">
+                    <path d="M10.298 13.7915C10.7419 13.5672 11.2372 13.7371 11.4615 14.181L14.7355 20.6978C15.0219 21.2687 15.8643 21.2687 16.1507 20.6978L19.4247 14.181C19.649 13.7371 20.1443 13.5672 20.5882 13.7915L30.1558 18.6753C30.609 18.9022 30.7712 19.4087 30.5443 19.862L27.1776 26.602C26.892 27.1746 26.0461 27.1746 25.7605 26.602L22.3938 19.862C22.167 19.4087 21.6049 19.2274 21.1611 19.4517L11.5935 14.5679C11.1496 14.3436 10.6681 14.3436 10.298 13.7915Z" fill="#ffb800"/>
+                    <path d="M11.9686 27.5672C12.4125 27.3429 12.9078 27.5128 13.1321 27.9567L16.4061 34.4735C16.6925 35.0444 17.5349 35.0444 17.8213 34.4735L21.0953 27.9567C21.3196 27.5128 21.8149 27.3429 22.2588 27.5672L31.8264 32.451C32.2796 32.6779 32.4418 33.1844 32.2149 33.638L28.8482 40.378C28.5626 40.9506 27.7167 40.9506 27.4311 40.378L24.0644 33.638C23.8376 33.1844 23.2755 33.0031 22.8317 33.2274L13.2641 28.3436C12.8202 28.1193 12.3387 28.1193 11.9686 27.5672Z" fill="#ffb800"/>
+                    <path d="M6.9208 19.862C7.3647 19.6377 7.86 19.8076 8.0843 20.2515L11.3583 26.7683C11.6447 27.3392 12.4871 27.3392 12.7735 26.7683L16.0475 20.2515C16.2718 19.8076 16.7671 19.6377 17.211 19.862L26.7786 24.7458C27.2318 24.9727 27.394 25.4792 27.1671 25.9328L23.8004 32.6728C23.5148 33.2454 22.6689 33.2454 22.3833 32.6728L19.0166 25.9328C18.7898 25.4792 18.2277 25.2979 17.7839 25.5222L8.2163 20.6384C7.7724 20.4141 7.2909 20.4141 6.9208 19.862Z" fill="#ffb800"/>
+                </svg>
+            </div>
+            <h2 class="modal-title">Export Successful!</h2>
+            <p class="modal-text">
+                Your images have been exported successfully. If you find this plugin helpful, 
+                consider sending a tip to support development!
+            </p>
+
+            <div class="modal-buttons">
+                <a href="https://aniquill1.gumroad.com/l/sezrad" target="_blank" id="tipLinkBtn" class="btn btn-tip"
+                    style="text-decoration: none;">
+                    <svg style="width: 1.25rem; height: 1.25rem; margin-left: -0.25rem;" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 7a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1zm2 3a1 1 0 00-1 1v4a1 1 0 102 0v-4a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-7a1 1 0 00-1 1v4a1 1 0 102 0v-4a1 1 0 00-1-1zm2-4a1 1 0 11-2 0 1 1 0 012 0z" fill="#000000"/>
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" fill="currentColor"/>
+                        <circle cx="9" cy="8" r="1" fill="#000000"/>
+                    </svg>
+                    <span>Send a Tip to the Developer</span>
+                </a>
+                <button id="dismissSuccessBtn" class="btn btn-secondary">
+                    <span>Done / Maybe Later</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="helpModal" class="modal-overlay">
+        <div class="modal-card">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">💡</div>
+            <h2 class="modal-title">How to Use</h2>
+
+            <ol class="welcome-steps">
+                <li>
+                    <span class="step-num">1</span>
+                    <span class="step-text"><b>Scan</b> your page or selection for images.</span>
+                </li>
+                <li>
+                    <span class="step-num">2</span>
+                    <span class="step-text"><b>Review</b> the number of images found.</span>
+                </li>
+                <li>
+                    <span class="step-num">3</span>
+                    <span class="step-text"><b>Export</b> using Originals or Convert & Rename.</span>
+                </li>
+            </ol>
+
+            <button id="closeHelpBtn" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                <span>Got it!</span>
+            </button>
+        </div>
+    </div>
+
+    <canvas id="conversionCanvas" style="display: none;"></canvas>
+
+    <script>
+        // --- [FIX] WRAP ALL CODE IN window.onload ---
+        window.onload = () => {
+
+            /**
+             * ui.js - V_FREE (Free Version UI)
+             * This script runs in the plugin's UI (the iframe sandbox).
+             * It handles UI interactions and communicates with `code.ts`.
+             */
+
+            // --- GLOBAL STATE ---
+            // --- INITIALIZATION ---
+function postMessageToPlugin(message) {
+    parent.postMessage({ pluginMessage: message }, '*');
+}
+
+// --- [NEW IMPORTANT FIX] ---
+// Tell the plugin main thread that the UI is fully loaded
+parent.postMessage(
+    { pluginMessage: { type: "ui-ready" } },
+    "*"
+);
+
+// Now safe to send init-plugin
+postMessageToPlugin({ type: 'init-plugin' });
+
+            let app = {
+                isProcessing: false,
+                foundImages: [],
+                selectionCount: 0,
+                currentDownloadType: null,
+            };
+
+            // [NEW] Global variables for streaming ZIP generation
+            let zip;
+            let totalImageCount = 0;
+            let processedImageCount = 0;
+            let batchConversionPromises = [];
+
+            // --- DOM ELEMENTS ---
+            // Caching all DOM elements for performance
+            const els = {
+                pageScan: document.getElementById('page-scan'),
+                pageResults: document.getElementById('page-results'),
+                backBtn: document.getElementById('backBtn'),
+                scanBtn: document.getElementById('scanBtn'),
+                scanBtnText: document.getElementById('scanBtnText'),
+                scanBtnIcon: document.getElementById('scanBtnIcon'),
+                scanBtnSpinner: document.getElementById('scanBtnSpinner'),
+                scanStopBtn: document.getElementById('scanStopBtn'),
+                modeSelected: document.getElementById('modeSelected'),
+                selectionCount: document.getElementById('selectionCount'),
+                scanProgress: document.getElementById('scanProgress'),
+                scanPhase: document.getElementById('scanPhase'),
+                scanStats: document.getElementById('scanStats'),
+                scanFill: document.getElementById('scanFill'),
+                scanStatusMessage: document.getElementById('scanStatusMessage'),
+                imageCount: document.getElementById('imageCount'),
+                totalSize: document.getElementById('totalSize'),
+                tabBtnOriginals: document.getElementById('tabBtnOriginals'),
+                tabBtnConvert: document.getElementById('tabBtnConvert'),
+                tabContentOriginals: document.getElementById('tabContentOriginals'),
+                tabContentConvert: document.getElementById('tabContentConvert'),
+                downloadOriginalBtn: document.getElementById('downloadOriginalBtn'),
+                downloadOriginalBtnText: document.getElementById('downloadOriginalBtnText'),
+                renamePattern: document.getElementById('renamePattern'),
+                downloadConvertBtn: document.getElementById('downloadConvertBtn'),
+                downloadConvertBtnText: document.getElementById('downloadConvertBtnText'),
+
+                // Progress bars for each tab
+                dlProgressOriginals: document.getElementById('dlProgressOriginals'),
+                dlFillOriginals: document.getElementById('dlFillOriginals'),
+                dlPhaseOriginals: document.getElementById('dlPhaseOriginals'),
+                dlStatsOriginals: document.getElementById('dlStatsOriginals'),
+                dlStopBtnOriginals: document.getElementById('dlStopBtnOriginals'),
+
+                dlProgressConvert: document.getElementById('dlProgressConvert'),
+                dlFillConvert: document.getElementById('dlFillConvert'),
+                dlPhaseConvert: document.getElementById('dlPhaseConvert'),
+                dlStatsConvert: document.getElementById('dlStatsConvert'),
+                dlStopBtnConvert: document.getElementById('dlStopBtnConvert'),
+
+                statusMessage: document.getElementById('statusMessage'),
+                footerText: document.getElementById('footerText'),
+                helpButton: document.getElementById('helpButton'),
+                helpModal: document.getElementById('helpModal'),
+                closeHelpBtn: document.getElementById('closeHelpBtn'),
+                conversionCanvas: document.getElementById('conversionCanvas'),
+
+                // NEW Success Modal elements
+                downloadSuccessModal: document.getElementById('downloadSuccessModal'),
+                dismissSuccessBtn: document.getElementById('dismissSuccessBtn'),
+            };
+
+            // A helper to get the currently active progress elements
+            function getCurrentProgressEls() {
+                if (app.currentDownloadType === 'original') {
+                    return {
+                        bar: els.dlProgressOriginals,
+                        fill: els.dlFillOriginals,
+                        phase: els.dlPhaseOriginals,
+                        stats: els.dlStatsOriginals,
+                        stopBtn: els.dlStopBtnOriginals
+                    };
+                } else {
+                    return {
+                        bar: els.dlProgressConvert,
+                        fill: els.dlFillConvert,
+                        phase: els.dlPhaseConvert,
+                        stats: els.dlStatsConvert,
+                        stopBtn: els.dlStopBtnConvert
+                    };
+                }
+            }
+
+
+            // --- MAIN MESSAGE HANDLER ---
+            window.onmessage = (event) => {
+                const msg = event.data.pluginMessage;
+                if (!msg) return;
+
+                switch (msg.type) {
+                    case 'selection-changed':
+                        app.selectionCount = msg.count;
+                        if (msg.count > 0) {
+                            els.selectionCount.textContent = `(${msg.count} selected)`;
+                            els.selectionCount.style.display = 'block';
+                        } else {
+                            els.selectionCount.style.display = 'none';
+                        }
+                        break;
+                    case 'scan-progress':
+                        updateProgress(els.scanProgress, els.scanFill, els.scanPhase, els.scanStats, msg);
+                        break;
+                    case 'scan-complete':
+                        onScanComplete(msg);
+                        break;
+                    case 'download-progress':
+                        const dlEls = getCurrentProgressEls();
+                        // Cap fetch progress at 90%
+                        updateProgress(dlEls.bar, dlEls.fill, dlEls.phase, dlEls.stats, msg, 90);
+                        break;
+
+                    case 'download-start':
+                        onDownloadStart(msg);
+                        break;
+                    case 'images-batch-ready':
+                        onImagesBatchReady(msg); // This is async
+                        break;
+                    case 'download-finish':
+                        onDownloadFinish(); // This is async
+                        break;
+
+                    case 'error':
+                        showStatus(msg.message, 'error', 'scan');
+                        stopProcessing();
+                        break;
+                    case 'operation-cancelled':
+                        showStatus('Operation cancelled', 'warn', 'scan');
+                        stopProcessing();
+                        break;
+                }
+            };
+
+
+            // --- UI NAVIGATION ---
+            function navigateTo(page) {
+                if (page === 'scan') {
+                    els.pageScan.style.display = 'flex';
+                    els.pageResults.style.display = 'none';
+                    els.backBtn.style.display = 'none';
+                    els.statusMessage.style.display = 'none';
+                } else if (page === 'results') {
+                    els.pageScan.style.display = 'none';
+                    els.pageResults.style.display = 'flex';
+                    els.backBtn.style.display = 'flex';
+                    els.scanStatusMessage.style.display = 'none';
+                }
+            }
+
+            function navigateToTab(tabName) {
+                if (tabName === 'originals') {
+                    els.tabBtnOriginals.classList.add('active');
+                    els.tabBtnConvert.classList.remove('active');
+                    els.tabContentOriginals.classList.add('active');
+                    els.tabContentConvert.classList.remove('active');
+                } else if (tabName === 'convert') {
+                    els.tabBtnOriginals.classList.remove('active');
+                    els.tabBtnConvert.classList.add('active');
+                    els.tabContentOriginals.classList.remove('active');
+                    els.tabContentConvert.classList.add('active');
+                }
+            }
+
+            // --- EVENT LISTENERS ---
+            els.backBtn.addEventListener('click', () => navigateTo('scan'));
+            els.tabBtnOriginals.addEventListener('click', () => navigateToTab('originals'));
+            els.tabBtnConvert.addEventListener('click', () => navigateToTab('convert'));
+            els.scanBtn.addEventListener('click', onScanClick);
+            els.scanStopBtn.addEventListener('click', onCancelOperation);
+
+            els.dlStopBtnOriginals.addEventListener('click', onCancelOperation);
+            els.dlStopBtnConvert.addEventListener('click', onCancelOperation);
+
+            els.downloadOriginalBtn.addEventListener('click', onDownloadOriginalsClick);
+            els.downloadConvertBtn.addEventListener('click', onDownloadConvertClick);
+
+            // Modals
+            els.helpButton.addEventListener('click', () => showModal('helpModal'));
+            els.closeHelpBtn.addEventListener('click', () => hideModal('helpModal'));
+
+            // New success modal dismissal
+            els.dismissSuccessBtn.addEventListener('click', () => hideModal('downloadSuccessModal'));
+
+            // NEW FIX: Format Checkbox Single Selection
+            document.querySelectorAll('.format-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    // If this one is checked, uncheck and disable the others
+                    if (e.target.checked) {
+                        document.querySelectorAll('.format-checkbox').forEach(otherCheckbox => {
+                            if (otherCheckbox !== e.target) {
+                                otherCheckbox.checked = false;
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Rename pattern tokens
+            document.querySelectorAll('.token-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const token = e.target.dataset.token;
+                    els.renamePattern.value += token;
+                    els.renamePattern.focus();
+                });
+            });
+
+            // --- MODAL CONTROLS ---
+            function showModal(modalId) {
+                document.getElementById(modalId).classList.add('modal-active');
+            }
+
+            function hideModal(modalId) {
+                document.getElementById(modalId).classList.remove('modal-active');
+            }
+
+            // --- PROCESSING STATE ---
+            function startProcessing(type) {
+                app.isProcessing = true;
+                // Disable all primary action buttons
+                els.scanBtn.disabled = true;
+                els.downloadOriginalBtn.disabled = true;
+                els.downloadConvertBtn.disabled = true;
+                els.statusMessage.style.display = 'none';
+                els.scanStatusMessage.style.display = 'none';
+
+                if (type === 'scan') {
+                    els.scanBtn.style.display = 'none';
+                    els.scanStopBtn.style.display = 'flex';
+                    els.scanProgress.style.display = 'block';
+                    // Hide download bars
+                    els.dlProgressOriginals.style.display = 'none';
+                    els.dlStopBtnOriginals.style.display = 'none';
+                    els.dlProgressConvert.style.display = 'none';
+                    els.dlStopBtnConvert.style.display = 'none';
+                } else {
+                    // This is a download
+                    zip = new JSZip();
+                    totalImageCount = 0;
+                    processedImageCount = 0;
+                    batchConversionPromises = [];
+
+                    const dlEls = getCurrentProgressEls();
+                    dlEls.bar.style.display = 'block';
+                    dlEls.stopBtn.style.display = 'flex';
+
+                    if (type === 'original') {
+                        els.downloadOriginalBtn.style.display = 'none'; // Hide button
+                    } else if (type === 'convert') {
+                        els.downloadConvertBtn.style.display = 'none'; // Hide button
+                    }
+                }
+            }
+
+            function stopProcessing() {
+                app.isProcessing = false;
+                // Enable scan button if in scan view, disable download buttons if no images found
+                const hasImages = app.foundImages.length > 0;
+                els.scanBtn.disabled = false;
+                els.downloadOriginalBtn.disabled = !hasImages;
+                els.downloadConvertBtn.disabled = !hasImages;
+
+                // Reset Scan button
+                els.scanBtn.style.display = 'flex';
+                els.scanStopBtn.style.display = 'none';
+
+                // Reset Download buttons
+                els.downloadOriginalBtn.style.display = 'flex';
+                els.downloadConvertBtn.style.display = 'flex';
+
+                // Hide all progress/stop indicators
+                els.scanProgress.style.display = 'none';
+                els.dlProgressOriginals.style.display = 'none';
+                els.dlStopBtnOriginals.style.display = 'none';
+                els.dlProgressConvert.style.display = 'none';
+                els.dlStopBtnConvert.style.display = 'none';
+
+                // Reset progress bars
+                els.scanFill.style.width = '0%';
+                els.dlFillOriginals.style.width = '0%';
+                els.dlFillConvert.style.width = '0%';
+
+                // Clear zip object on stop
+                zip = null;
+                batchConversionPromises = [];
+            }
+
+            // --- UI UPDATERS ---
+            function updateProgress(barEl, fillEl, phaseEl, statsEl, msg, maxProgress = 100) {
+                if (!barEl) return; // Safety check
+                barEl.style.display = 'block';
+                // Calculate percentage but cap it at maxProgress
+                let percent = msg.progress;
+                if (percent > maxProgress) {
+                    percent = maxProgress;
+                }
+                fillEl.style.width = `${percent}%`;
+                phaseEl.textContent = msg.phase;
+                statsEl.textContent = msg.eta ? `${msg.current}/${msg.total} (${msg.eta})` : `${msg.current}/${msg.total}`;
+            }
+
+            function showStatus(message, type, page = 'results') {
+                const el = (page === 'scan') ? els.scanStatusMessage : els.statusMessage;
+                el.textContent = message;
+                el.className = `status-message status-${type}`;
+                el.style.display = 'block';
+
+                if (page === 'results') {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+
+            // --- CORE ACTIONS ---
+            function onScanClick() {
+                if (app.isProcessing) return;
+
+                const mode = els.modeSelected.checked ? 'selected' : 'entire';
+
+                if (mode === 'selected' && app.selectionCount === 0) {
+                    showStatus("Please select one or more frames to scan.", 'warn', 'scan');
+                    return;
+                }
+
+                startProcessing('scan');
+                postMessageToPlugin({ type: 'scan-images', scanMode: mode });
+            }
+
+            function onCancelOperation() {
+                if (!app.isProcessing) return;
+                postMessageToPlugin({ type: 'cancel-operation' });
+                // stopProcessing() will be called by the 'operation-cancelled' message handler
+            }
+
+            function onScanComplete(msg) {
+                app.foundImages = msg.images || [];
+                stopProcessing();
+
+                if (app.foundImages.length > 0) {
+                    els.imageCount.textContent = app.foundImages.length;
+                    els.totalSize.style.display = 'none'; // We don't have total size yet
+                    navigateTo('results');
+                    navigateToTab('originals');
+                    showStatus(`Found ${app.foundImages.length} unique images. Ready to export.`, 'success');
+                } else {
+                    showStatus('No images found on this page or selection.', 'warn', 'scan');
+                }
+            }
+
+            function onDownloadOriginalsClick() {
+                app.currentDownloadType = 'original';
+                startProcessing('original');
+                const images = app.foundImages;
+                postMessageToPlugin({
+                    type: 'download-images',
+                    images: images,
+                    downloadType: 'original',
+                    formats: [],
+                    // Note: This pattern is largely unused by the main thread now, but kept for legacy
+                    renamePattern: '{name}-{count}' 
+                });
+            }
+
+            function onDownloadConvertClick() {
+                app.currentDownloadType = 'convert';
+                
+                const formats = Array.from(document.querySelectorAll('.format-checkbox:checked')).map(el => el.value);
+                const renamePattern = els.renamePattern.value;
+
+                if (formats.length === 0) {
+                    showStatus('Please select at least one format to convert to.', 'warn', 'results');
+                    return;
+                }
+
+                startProcessing('convert');
+                const images = app.foundImages;
+                
+                postMessageToPlugin({
+                    type: 'download-images',
+                    images: images,
+                    downloadType: 'convert',
+                    formats: formats,
+                    renamePattern: renamePattern
+                });
+            }
+
+            // --- IMAGE PROCESSING & ZIP ---
+            /**
+             * Applies the rename pattern to an image.
+             */
+            function applyRenamePattern(pattern, image, index) {
+                try {
+                    let count = (index + 1).toString().padStart(3, '0');
+                    // Removed {frame}/ logic from the original here, user pattern dictates the path
+                    const name = (image.name || 'image').replace(/[<>:"/\\|?*\x00-\x1f]/g, '_');
+                    const frame = (image.frame || 'page').replace(/[<>:"/\\|?*\x00-\x1f]/g, '_');
+
+                    return pattern
+                        .replace(/{name}/g, name)
+                        .replace(/{frame}/g, frame)
+                        .replace(/{width}/g, image.width || 0) 
+                        .replace(/{height}/g, image.height || 0)
+                        .replace(/{count}/g, count);
+                } catch (err) {
+                    console.error("Error applying rename pattern:", err);
+                    // Fallback to a safe name
+                    return `image_${index + 1}`;
+                }
+            }
+
+            /**
+             * [NEW] Called when 'download-start' is received.
+             * Initializes the total count for the UI progress bar.
+             */
+            function onDownloadStart(msg) {
+                app.currentDownloadType = msg.downloadType;
+                // We get the total count from the main thread
+                totalImageCount = msg.totalImages;
+                processedImageCount = 0;
+            }
+
+            /**
+             * [NEW] Called for each batch of images.
+             */
+            async function onImagesBatchReady(msg) {
+                const { images } = msg;
+                if (!images || !app.isProcessing) return; // Skip if cancelled
+
+                const dlEls = getCurrentProgressEls();
+                // We now assume only 1 format is selected or 0 (handled by onDownloadConvertClick)
+                const formats = Array.from(document.querySelectorAll('.format-checkbox:checked')).map(el => el.value);
+                const renamePattern = els.renamePattern.value;
+
+                try {
+                    if (app.currentDownloadType === 'original') {
+                        dlEls.phase.textContent = 'Zipping originals...';
+                        for (const img of images) {
+                            // --- FIX: Use a simpler, flat pattern for Originals (name-count.format) ---
+                            const simplePattern = '{name}-{count}'; 
+                            const newName = applyRenamePattern(simplePattern, img, processedImageCount);
+                            const safeName = newName.replace(/\.\.\//g, '');
+                            const fileName = `${safeName}.${img.format.toLowerCase()}`;
+                            zip.file(fileName, img.bytes);
+                            processedImageCount++; // Increment per image
+                        }
+                    } else if (app.currentDownloadType === 'convert') {
+                        dlEls.phase.textContent = 'Converting images...';
+
+                        // Create conversion promises for this batch
+                        const conversionPromises = [];
+
+                        for (const image of images) {
+                            const imageIndex = processedImageCount; // Lock the current index
+                            // Only runs once due to single format enforcement
+                            for (const format of formats) { 
+                                const newName = applyRenamePattern(renamePattern, image, imageIndex); 
+                                // The newName can contain subfolders (e.g. {frame}/...)
+                                const safeName = newName.replace(/\.\.\//g, '');
+                                const fileName = `${safeName}.${format.toLowerCase()}`;
+
+                                conversionPromises.push(
+                                    convertImage(image.bytes, format).then(convertedBlob => ({
+                                        // fileName includes the path from the rename pattern
+                                        fileName: fileName,
+                                        blob: convertedBlob
+                                    }))
+                                );
+                            }
+                            processedImageCount++; // Increment *after* all formats (which is just one) for one image are set
+                        }
+
+                        // Add this batch's promises to the global list
+                        batchConversionPromises.push(Promise.all(conversionPromises));
+                    }
+
+                    // Update progress based on *images processed*
+                    const progressData = {
+                        progress: (processedImageCount / totalImageCount) * 100,
+                        current: processedImageCount,
+                        total: totalImageCount,
+                        phase: app.currentDownloadType === 'original' ? 'Zipping...' : 'Converting...'
+                    };
+                    // Cap fetch progress at 90%
+                    updateProgress(dlEls.bar, dlEls.fill, dlEls.phase, dlEls.stats, progressData, 90);
+
+                } catch (err) {
+                    stopProcessing();
+                    showStatus(`Export failed during batch processing: ${err.message}`, 'error', 'results');
+                    postMessageToPlugin({ type: 'cancel-operation' }); // Tell main thread to stop
+                }
+            }
+
+
+            /**
+             * [NEW] Called when 'download-finish' is received.
+             * Generates the final zip and triggers the download.
+             */
+            async function onDownloadFinish() {
+                if (!app.isProcessing) return; // Don't run if cancelled
+
+                const dlEls = getCurrentProgressEls();
+
+                try {
+                    // Show "Processing" as the first step after fetching
+                    dlEls.phase.textContent = 'Processing files...';
+                    dlEls.stats.textContent = 'Please wait...';
+                    dlEls.fill.style.width = '90%';
+                    await new Promise(resolve => setTimeout(resolve, 50)); // Force UI repaint
+
+                    // For 'convert' mode, we must wait for all conversions to finish
+                    if (app.currentDownloadType === 'convert') {
+                        dlEls.phase.textContent = 'Waiting for conversions...';
+
+                        // Wait for all batches of promises to resolve
+                        const allBatches = await Promise.all(batchConversionPromises);
+
+                        // Now add them all to the zip
+                        dlEls.phase.textContent = 'Adding to ZIP...';
+                        for (const batch of allBatches) {
+                            for (const converted of batch) {
+                                // Add file directly, relying on 'fileName' to contain the path
+                                zip.file(converted.fileName, converted.blob);
+                            }
+                        }
+                    } else if (app.currentDownloadType === 'original') {
+                        // Originals are already zipped in onImagesBatchReady
+                        dlEls.phase.textContent = 'Preparing Originals ZIP...';
+                    }
+
+                    // Update UI to show final compression step
+                    dlEls.phase.textContent = 'Compressing ZIP...';
+                    dlEls.fill.style.width = '95%';
+                    await new Promise(resolve => setTimeout(resolve, 50)); // Force UI repaint
+
+                    const zipBlob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+
+                    // Check if zip is empty (which means an error happened)
+                    if (zipBlob.size < 100) { 
+                        let fileCount = 0;
+                        zip.forEach(() => fileCount++);
+                        if (fileCount === 0) {
+                            if (app.isProcessing) {
+                                throw new Error("No files were added to the ZIP. Conversion might have failed or cancelled.");
+                            } else {
+                                return; // Cancelled, so just stop
+                            }
+                        }
+                    }
+
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(zipBlob);
+                    link.download = `Figma_Images_${Date.now()}.zip`;
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+
+                    stopProcessing();
+                    
+                    // Show NEW Success Modal instead of status message
+                    showModal('downloadSuccessModal');
+
+
+                } catch (err) {
+                    stopProcessing();
+                    showStatus(`ZIP generation failed: ${err.message}`, 'error', 'results');
+                }
+            }
+
+            /**
+             * Converts image bytes to a new format using an HTML canvas.
+             */
+            function convertImage(bytes, format) {
+                return new Promise((resolve, reject) => {
+                    const mime = `image/${format.toLowerCase()}`;
+                    const originalMime = getMimeType(bytes);
+                    const blob = new Blob([bytes], { type: originalMime });
+                    const url = URL.createObjectURL(blob);
+                    const img = new Image();
+
+                    img.onload = () => {
+                        const canvas = els.conversionCanvas;
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+
+                        // Fill background white for opaque formats
+                        if (format === 'JPG' || format === 'WEBP') {
+                            ctx.fillStyle = '#FFFFFF';
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        } else {
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        }
+                        ctx.drawImage(img, 0, 0); 
+
+                        canvas.toBlob(
+                            (convertedBlob) => {
+                                URL.revokeObjectURL(url);
+                                if (convertedBlob) { resolve(convertedBlob); }
+                                else { reject(new Error('Canvas toBlob failed (check browser support or memory)')); }
+                            },
+                            mime, 0.9 // 0.9 quality
+                        );
+                    };
+                    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Failed to load image into canvas (likely corrupt/invalid image data)')); };
+                    img.src = url;
+                });
+            }
+
+            /**
+             * Detects image MIME type from magic bytes.
+             */
+            function getMimeType(bytes) {
+                if (bytes instanceof Uint8Array === false) bytes = new Uint8Array(bytes);
+                if (bytes[0] === 0x89 && bytes[1] === 0x50) return 'image/png';
+                if (bytes[0] === 0xFF && bytes[1] === 0xD8) return 'image/jpeg';
+                if (bytes[0] === 0x47 && bytes[1] === 0x49) return 'image/gif';
+                if (bytes[0] === 0x52 && bytes[1] === 0x49) return 'image/webp';
+                return 'application/octet-stream';
+            }
+
+            // --- [FIX] END OF window.onload WRAPPER ---
+        };
+    </script>
+</body>
+
+</html>

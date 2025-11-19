@@ -1,0 +1,40 @@
+# FigmaPhotoGrab - Setup Instructions
+
+**Created by Aniket Khadse**  
+**Contact: 9370670841** (Contact my no for changes and error solution)
+
+## 📦 How to Install This Plugin
+
+### Step 1: Extract Files
+- Extract the ZIP file to any folder on your computer
+- You should see 3 files:
+  - `code.js`
+  - `ui.html` 
+  - `manifest.json`
+
+### Step 2: Open Figma Desktop App
+- **Important**: Must use Figma Desktop App (not web browser)
+- If you don't have it, download from: https://www.figma.com/downloads/
+
+### Step 3: Import Plugin
+**Method 1:**
+1. In Figma, go to **Plugins** → **Development** → **Import plugin from manifest...**
+2. Browse to your extracted folder
+3. Select the `manifest.json` file
+4. Click **Open**
+
+**Method 2 (Alternative):**
+1. Press **Ctrl+K** (or **Cmd+K** on Mac)
+2. Type "Plugins and widgets"
+3. Click **Import as manifest**
+4. Browse to your extracted folder and select `manifest.json`
+
+### Step 4: Run the Plugin
+1. Open any Figma file with images
+2. Right-click → **Plugins** → **Development** → **FigmaPhotoGrab**
+3. Select your export formats and click **Download Original Images**
+
+## ✅ That's it! 
+The plugin is now installed and ready to use.
+
+**Need help?** Contact: 9370670841

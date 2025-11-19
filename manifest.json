@@ -1,0 +1,15 @@
+{
+  "name": "Export Master: Original Image Converter",
+  "id": "1557149400939799570",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": [
+      "https://cdnjs.cloudflare.com",
+      "https://api.gumroad.com"
+    ]
+  }
+}

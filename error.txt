@@ -1,0 +1,307 @@
+------- Clearing and silencing console.log from Figma -------
+[Violation] Potential permissions policy violation: camera is not allowed in this document.
+[Violation] Potential permissions policy violation: microphone is not allowed in this document.
+[Violation] Potential permissions policy violation: clipboard-write is not allowed in this document.
+[Violation] Potential permissions policy violation: display-capture is not allowed in this document.
+[Violation] Potential permissions policy violation: camera is not allowed in this document.
+[Violation] Potential permissions policy violation: microphone is not allowed in this document.
+[Violation] Potential permissions policy violation: clipboard-write is not allowed in this document.
+[Violation] Potential permissions policy violation: display-capture is not allowed in this document.
+vendor-core-9f1e503c1a98455c.min.js.br:77  POST https://events.statsigapi.net/v1/rgstr net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+innerIframeElement.onload @ figma_app-8a227b6629b71b87.min.js.br:209
+vendor-core-9f1e503c1a98455c.min.js.br:77  POST https://events.statsigapi.net/v1/rgstr net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+setTimeout
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+Promise.catch
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+setTimeout
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+Promise.catch
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+setTimeout
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+Promise.catch
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+vendor-core-9f1e503c1a98455c.min.js.br:77  POST https://events.statsigapi.net/v1/rgstr net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+setTimeout
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+Promise.catch
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+innerIframeElement.onload @ figma_app-8a227b6629b71b87.min.js.br:209
+vendor-core-9f1e503c1a98455c.min.js.br:77  POST https://events.statsigapi.net/v1/rgstr net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+setTimeout
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+Promise.catch
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+setTimeout
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+Promise.catch
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+innerIframeElement.onload @ figma_app-8a227b6629b71b87.min.js.br:209
+vendor-core-9f1e503c1a98455c.min.js.br:77  POST https://events.statsigapi.net/v1/rgstr net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+setTimeout
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+Promise.catch
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+setTimeout
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+Promise.catch
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+setTimeout
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+Promise.catch
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+innerIframeElement.onload @ figma_app-8a227b6629b71b87.min.js.br:209
+vendor-core-9f1e503c1a98455c.min.js.br:77  POST https://events.statsigapi.net/v1/rgstr net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+vendor-core-9f1e503c1a98455c.min.js.br:77  POST https://events.statsigapi.net/v1/rgstr net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+setTimeout
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+Promise.catch
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+vendor-core-9f1e503c1a98455c.min.js.br:77  POST https://events.statsigapi.net/v1/rgstr net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+setTimeout
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+Promise.catch
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+setTimeout
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+Promise.catch
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+vendor-core-9f1e503c1a98455c.min.js.br:77  POST https://events.statsigapi.net/v1/rgstr net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+setTimeout
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+Promise.catch
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+setTimeout
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+Promise.catch
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77
+setTimeout
+(anonymous) @ vendor-core-9f1e503c1a98455c.min.js.br:77
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+Promise.catch
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+d @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+(anonymous) @ vendor-a58e17de356b9cb4.min.js.br:132
+t @ vendor-core-9f1e503c1a98455c.min.js.br:77

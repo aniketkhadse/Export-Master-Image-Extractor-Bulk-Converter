@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES6", // Compiles to ES6, which supports Promise, Map, Set, etc.
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": [
+      "ES6",
+      "DOM",
+      "ES2020"
+    ], // CHANGED: Added "ES2020" to support Promise.allSettled
+    "types": [
+      "@figma/plugin-typings"
+    ] // Tells compiler to use the Figma types you installed
+  }
+}
