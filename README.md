@@ -1,4 +1,6 @@
 # Original Image Extractor
+link for the figma plugin 
+https://www.figma.com/community/plugin/1557149400939799570
 
 Figma plugin to extract original, unedited source images at full resolution with preserved quality.
 
